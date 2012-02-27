@@ -4,6 +4,9 @@ project(UBIrotate C CXX)
 file(GLOB CPPS src/*.cpp src/*.c)
 file(GLOB HEADERS include/*.h)
 
+SET(CMAKE_CXX_FLAGS_DEBUG  "-O0 -g")
+SET(CMAKE_BUILD_TYPE "DEBUG")
+
 find_package(Boost REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -15,4 +18,4 @@ target_link_libraries(UBIrotate ${Boost_LIBRARIES})
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 
-install (TARGETS UBIrotate CONFIGURATION Release DESTINATION bin)
+install (TARGETS UBIrotate DESTINATION bin)

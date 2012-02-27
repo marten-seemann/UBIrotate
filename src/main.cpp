@@ -1,11 +1,5 @@
-//
-//  main.cpp
-//  UBIrotate
-//
-//  Created by Marten Seemann on 05.02.12.
-//  Copyright (c) 2012 ---. All rights reserved.
-//
-#define _USE_MATH_DEFINES 
+#define _USE_MATH_DEFINES
+#define DEBUG 0
 
 
 #include <iostream>
@@ -47,11 +41,18 @@ int main (int argc, const char * argv[])
   po::store(po::parse_command_line(argc, argv, cmdline_options), vm);
   po::notify(vm);  
   
+  if(vm.count("version")) {
+    cout << "UBIrotate4, version 0.1.0" << endl;    
+    exit(1);
+  }
+  
   // non-valid command line options (or help) => show usage
   if (vm.size()==0 || vm.count("help") || !(vm.count("axis") && vm.count("angle") && vm.count("file"))) {
     cout << cmdline_options << "\n";
     exit(1);
   }
+  
+
   
   //read the 3 necessary values
   string axis=vm["axis"].as<string>();
@@ -66,7 +67,7 @@ int main (int argc, const char * argv[])
   }
   double angle=vm["angle"].as<double>();
   string filename=vm["file"].as<string>();
-  cout << axis << " " << angle << endl;
+  if(DEBUG) cout << "Axis: " << axis << ", angle: " << angle << endl;
   
 
   // read the UBI matrix from the given file
@@ -77,6 +78,7 @@ int main (int argc, const char * argv[])
     exit(1);
   }
   
+  // read the original UBI from the given file
   string line, a, b ,c;
   Matrix ubi_orig(3);
   int counter=0;
@@ -92,8 +94,11 @@ int main (int argc, const char * argv[])
     ubi_orig.setValue(counter,2,atof(c.c_str()));
     counter++;
   }
-  cout << "Original UBI" << endl;
-  ubi_orig.print();
+  
+  if(DEBUG) {
+    cout << "Original UBI" << endl;
+    ubi_orig.print();
+  }
   
   // calc the normalized vector n to rotate about
   vector<double> n(3);
@@ -117,34 +122,30 @@ int main (int argc, const char * argv[])
   rot.setValue(2,0,n.at(2)*n.at(0)*(1-cos(angle))-n.at(1)*sin(angle));
   rot.setValue(2,1,n.at(2)*n.at(1)*(1-cos(angle))+n.at(0)*sin(angle));
   rot.setValue(2,2,cos(angle)+n.at(2)*n.at(2)*(1-cos(angle)));
-  cout << "Rotation matrix" << endl;
-  rot.print();
+  if(DEBUG) {
+    cout << "Rotation matrix" << endl;
+    rot.print();
+  }
 
   
   Matrix ubi_new=(rot*ubi_orig.getTranspose()).getTranspose();
-  ubi_new.print();
-  
-
-  
-  
-  
-  
-  /*
-  Matrix a(3);
-  Matrix b(3);
-  int counter=1;
-  for(int i=0;i<3;i++) {
-    for(int j=0;j<3;j++) {
-      a.setValue(i,j,counter);
-      b.setValue(i,j,10-counter);
-      counter++;
-    }
+  if(DEBUG) {
+    cout << "This is the new UBI:" << endl;
+    ubi_new.print();
   }
   
-  Matrix d=a*b;
-  d.print();
-}
-*/
+  // save the matrix to a file
+  string output_filename=filename+".rot";
+  ofstream myfile;
+  myfile.open (output_filename.c_str());
+  for(int i=0;i<3;i++) {
+    for(int j=0;j<3;j++) {
+      myfile << ubi_new.getValue(i,j);
+      myfile << " ";
+    }
+    myfile << endl;
+  }
+  myfile.close();
   
   return 0;
 }

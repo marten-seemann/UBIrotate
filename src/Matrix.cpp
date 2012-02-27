@@ -1,11 +1,3 @@
-//
-//  Matrix.cpp
-//  UBIrotate
-//
-//  Created by Marten Seemann on 05.02.12.
-//  Copyright (c) 2012 ---. All rights reserved.
-//
-
 #define MATHEMATICA 1
 #include "Matrix.h"
 
@@ -21,10 +13,12 @@ int Matrix::getSize() const {
   return size;
 }
 
+// returns the value of matrix element M_ij
 double Matrix::getValue(const int i, const int j) const {
   return data.at(i*size+j);
 }
 
+// set the value of matrix element M_ij
 void Matrix::setValue(const int i, const int j, const double value) {
   data.at(i*size+j)=value;
 };
@@ -39,6 +33,7 @@ Matrix& Matrix::getTranspose() const {
   return *tmp;
 };
 
+// print the Matrix. Either human-readable or in Mathematica format
 void Matrix::print() const {
   if(MATHEMATICA) cout << "{ ";
   for(int i=0;i<size;i++) {
@@ -66,7 +61,6 @@ Matrix& Matrix::operator=(Matrix& a) {
 };
 
 Matrix::Matrix(const Matrix& a) {
-  cout << "Copy" << endl;
   size=a.size;
   data=a.data;
   test=new double(*(a.test));

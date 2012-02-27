@@ -1,12 +1,3 @@
-
-//
-//  functions.cpp
-//  UBIrotate
-//
-//  Created by Marten Seemann on 05.02.12.
-//  Copyright (c) 2012 ---. All rights reserved.
-//
-
 #include "functions.h"
 
 string& trim(string &str)
