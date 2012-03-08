@@ -1,12 +1,16 @@
-#define MATHEMATICA 1
+#define MATHEMATICA 0 /** <output the matrix in Mathematica format? */
 #include "Matrix.h"
 
 using namespace std;
 
+
+
 Matrix::Matrix(const int size) {
   this->size=size;
   data.resize(size*size);
-  test=new double(1.01);
+  for(int i=0;i<size*size;i++) {
+    data.at(i)=0;
+  }
 }
 
 int Matrix::getSize() const {

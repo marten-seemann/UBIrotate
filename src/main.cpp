@@ -1,4 +1,8 @@
+//! @cond
 #define _USE_MATH_DEFINES
+//! @endcond
+
+/// output debug messages?
 #define DEBUG 0
 
 
@@ -12,6 +16,11 @@
 #include "Matrix.h"
 #include "functions.h"
 #include <boost/program_options.hpp>
+
+
+/*! \mainpage UBIrotate
+ *
+ */
 
 namespace po = boost::program_options;
 using namespace std;
