@@ -67,7 +67,6 @@ Matrix& Matrix::operator=(Matrix& a) {
 Matrix::Matrix(const Matrix& a) {
   size=a.size;
   data=a.data;
-  test=new double(*(a.test));
 }
 
 
