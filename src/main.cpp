@@ -51,7 +51,7 @@ int main (int argc, const char * argv[])
   po::notify(vm);  
   
   if(vm.count("version")) {
-    cout << "UBIrotate, version 0.1.0" << endl;    
+    cout << "UBIrotate, version 1.0" << endl;    
     exit(1);
   }
   
